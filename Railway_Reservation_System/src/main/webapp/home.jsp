@@ -1,3 +1,6 @@
+<%@page import="controller.AppConfig"%>
+<%@page import="org.springframework.context.annotation.AnnotationConfigApplicationContext"%>
+<%@page import="org.springframework.context.ApplicationContext"%>
 <%@page import="factories.UserDaoFactory"%>
 <%@page import="interfaces.UserDao"%>
 <%@page import="models.UserBO"%>
@@ -19,8 +22,10 @@
 		response.sendRedirect("index.jsp");
 	}
 	//String username = (String)session.getAttribute("username");
-	UserDao udao = UserDaoFactory.getInstance();
-	UserBO user = new UserBO();
+	//UserDao udao = UserDaoFactory.getInstance();
+	ApplicationContext factory = new AnnotationConfigApplicationContext(AppConfig.class);
+	UserBO user = factory.getBean(UserBO.class);
+	UserDao udao = factory.getBean(UserDao.class);
 	user = udao.getUserDetails((String)session.getAttribute("username"));
 	
 %>
