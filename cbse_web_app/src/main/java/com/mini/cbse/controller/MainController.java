@@ -380,6 +380,32 @@ public class MainController {
 		return mv;
 	}
 	
+	@RequestMapping(value="/add-book", method=RequestMethod.POST)
+	public ModelAndView addBooks(HttpServletRequest request,@RequestParam(value = "name", required = false, defaultValue = "") String name,
+			@RequestParam(value = "author", required = false, defaultValue = "") String author,@RequestParam(value = "copies", required = false, defaultValue = "0") Integer copies) {
+		HttpSession session = request.getSession();
+		if (session
+				.getAttribute("usertype") == null /* || !optionsJDBCTemplate.checkStatus("update_booklist") */){ return new ModelAndView("redirect:books"); }
+//		String usertype = (String) session.getAttribute("usertype");
+		if((name.length() == 0 || name.length() >= 50) || (author.length() == 0 || author.length() >= 50) || copies < 0) { return new ModelAndView("redirect:books"); }
+//		if(usertype.matches("admin")) { bookJDBCTemplate.create(name, author, copies, copies); }
+		Response resp = bookJDBCTemplate.create(name, author, copies, copies);
+		return new ModelAndView("redirect:books");
+	}
+	
+	@RequestMapping(value="/edit-book", method=RequestMethod.POST)
+	public ModelAndView addBooks(HttpServletRequest request,@RequestParam(value = "bookid", required = false, defaultValue = "-1") Integer bookid,
+			@RequestParam(value = "total", required = false, defaultValue = "0") Integer total,@RequestParam(value = "rem", required = false, defaultValue = "0") Integer rem) {
+		HttpSession session = request.getSession();
+		if (session
+				.getAttribute("usertype") == null /* || !optionsJDBCTemplate.checkStatus("update_booklist") */){ return new ModelAndView("redirect:books"); }
+//		String usertype = (String) session.getAttribute("usertype");
+		if(bookid == -1 || total < 0 || rem < 0) { return new ModelAndView("redirect:books"); }
+//		if(usertype.matches("admin")) { bookJDBCTemplate.update(bookid, total, rem); }
+		Response resp = bookJDBCTemplate.update(bookid, total, rem); 
+		return new ModelAndView("redirect:books");
+	}
+	
 	@RequestMapping(value="/about", method=RequestMethod.GET)
 	public ModelAndView about_us(HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView("about_us");

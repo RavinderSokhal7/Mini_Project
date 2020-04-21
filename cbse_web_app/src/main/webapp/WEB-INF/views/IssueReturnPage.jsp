@@ -61,10 +61,7 @@
 	<div style="clear:both"></div>
 </div>
 
-<div id="footer" style="position:relative; font-size:14px;" >
-<p id="legal">&copy;Copyright All Rights Reserved. Designed by <a href="contact">Web team</a></p>
-	
-</div>
+<jsp:include page="footerComp.jsp"></jsp:include>
 
 </body>
 </html>

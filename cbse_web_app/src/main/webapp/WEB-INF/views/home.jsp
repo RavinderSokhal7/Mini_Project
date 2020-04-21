@@ -93,12 +93,7 @@ function getComponent() {
 }
 </script>
 
-<div id="footer" style="position:relative; font-size:14px;" >
-<p id="legal">&copy;Copyright All Rights Reserved. Designed by <a href="contact">Web team</a></p>
-	<!-- <p id="links"  ><a href="http://172.31.102.36">172.31.102.36</a> 
-	
-	</p> -->
-</div>
+<jsp:include page="footerComp.jsp"></jsp:include>
 
 </body>
 </html>
