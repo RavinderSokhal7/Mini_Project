@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+	<!-- Spring connecting to MySQL database using com.mysql.jdbc.drivers -->
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://localhost:3306/cbse" />
+		<property name="username" value="root" />
+		<property name="password" value="password" />
+	</bean>
+	
+	<!-- Definition for bookJDBCTemplate bean -->
+   <bean id = "bookJDBCTemplate" 
+      class = "com.mini.cbse.Book.BookJDBCTemplate">
+      <property name = "dataSource" ref = "dataSource" />    
+   </bean>
+   
+	<!-- Definition for userJDBCTemplate bean -->
+   <bean id = "userJDBCTemplate" 
+      class = "com.mini.cbse.User.UserJDBCTemplate">
+      <property name = "dataSource" ref = "dataSource" />    
+   </bean>
+   
+   <!-- Definition for categoryJDBCTemplate bean -->
+   <bean id = "categoryJDBCTemplate" 
+      class = "com.mini.cbse.Category.CategoryJDBCTemplate">
+      <property name = "dataSource" ref = "dataSource" />    
+   </bean>
+	<!-- Definition for userJDBCTemplate bean
+   <bean id = "optionsJDBCTemplate" 
+      class = "com.mini.Library.Options.optionsJDBCTemplate">
+      <property name = "dataSource" ref = "dataSource" />    
+   </bean> -->
+
+</beans>
