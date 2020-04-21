@@ -1,12 +1,12 @@
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" session="true"%>
 
 <!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="author" content="Library Webteam">
-<title>Issue/Return | Library</title>
+<meta name="author" content="Webteam">
+<title>Preview | CBSE</title>
 <spring:url value="/resources/css/index.css" var="indexCss" />
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <link href="${indexCss}" rel="stylesheet" type="text/css" />
@@ -15,22 +15,16 @@
 <body>
 
 <div id="header">
-	<h1><a href="#">Library Management System</a></h1>
-			<ul id="nav-menu">
-				<c:if test="${not empty menulinks}">
-				    <c:forEach items="${menulinks}" var="menulink">
-						<li><a href="${menulink.getLink()}">${menulink.getName()}</a></li>
-					</c:forEach>
-				</c:if>
-			</ul>
+	<h1><a href="#">${category}</a></h1>
+			
 </div>
 <div id="page">
 	<div id="content">
-		<div id="title"><h2>Issue/Return</h2>
-		<span class="welcome">Welcome ${user},</span></div>
-		
+		<div id="title"><h2>${category }</h2>
+		<span class="welcome">Welcome,</span></div>
 		<div class="body" align="center">
 			<form method="post" action="issue-return">
+				<h3 style="margin:10px 0;font-size:24px">Issue/Return</h3>
 				<h3 style="margin:10px 0;font-size:24px">Fill the form.</h3>
 				<p>An user can only issue a maximum of 3 books at a time.</p>
 				<div style="margin:10px 0">
@@ -58,28 +52,18 @@
 				<input type="submit" value="Submit" style="width:12%;margin:0;padding:8px 10px;">
 				<p id="errorMessage" <c:if test="${status == false}">style="color:red"</c:if><c:if test="${status == true}">style="color:green"</c:if>>${errorMessage}</p>
 			</form>
+			<form action="construct_page" method= "get">
+				<input type="submit" value="Go Back to Preview Page" style="margin:0;padding:8px 10px;">
+			</form>
 		</div>
-	</div>
-			<ul id="side_menu">
-		<li><a href="">Quick Links</a>
-			<ul style="display:block">
-				<c:if test="${not empty quicklinks}">
-				    <c:forEach items="${quicklinks}" var="quicklink">
-						<li><a href="${quicklink.getLink()}">${quicklink.getName()}</a></li>
-					</c:forEach>
-				</c:if>
-			</ul>
-		</li>
-		</ul>
+		</div>
 		
 	<div style="clear:both"></div>
 </div>
 
 <div id="footer" style="position:relative; font-size:14px;" >
-<p id="legal">&copy;Copyright Library All Rights Reserved. Designed by <a href="contact">Library Webteam</a></p>
-	<p id="links"  ><a href="http://172.31.102.36">172.31.102.36</a> 
+<p id="legal">&copy;Copyright All Rights Reserved. Designed by <a href="contact">Web team</a></p>
 	
-	</p>
 </div>
 
 </body>

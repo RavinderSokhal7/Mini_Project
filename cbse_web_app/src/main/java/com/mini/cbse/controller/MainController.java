@@ -241,6 +241,30 @@ public class MainController {
 		return mv;
 	}
 	
+	@RequestMapping(value = "/construct_page", method=RequestMethod.GET)
+	public ModelAndView constructPageGet(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		ModelAndView mv = new ModelAndView("constructed_page");
+		String counter_username = (String) session.getAttribute("user");
+		User user = userJDBCTemplate.getUser(counter_username);
+		if(user == null) { return new ModelAndView("redirect:logout"); }
+		mv.addObject("user", user);
+		int id = (int)session.getAttribute("category_id");
+		Category cat = categoryJDBCTemplate.getCategoryById(id);
+		
+		List<String> list = (List<String>)session.getAttribute("components");
+		session.setAttribute("category_name", cat.getName());
+		
+		if(id== 1) {
+			mv = showBooks(request,"");
+			
+		}
+		
+		mv.addObject("components",list);
+		mv.addObject("category",cat.getName());
+		return mv;
+	}
+	
 	@RequestMapping(value = "/construct_page", method=RequestMethod.POST)
 	public ModelAndView constructPage(HttpServletRequest request) {
 		HttpSession session = request.getSession();
@@ -281,6 +305,11 @@ public class MainController {
 //		mv.addObject("check_case", optionsJDBCTemplate);
 		mv.addObject("books", Books);
 		
+		/*
+		 * if(Books.size() == 0) { Response resp = new
+		 * Response(false,"No Books Found!"); mv.addObject("response", resp); }
+		 */
+		
 		//Adding Components to page
 		List<String> list = (List<String>)session.getAttribute("components");
 		String catname = (String) session.getAttribute("category_name");
@@ -292,6 +321,62 @@ public class MainController {
 		else { mv.addObject("usertype", 0);mv.addObject("user", "Guest");mv.addObject("usertype", "Guest"); }
 		if(search != "") {mv.addObject("search", search);}
 		else {mv.addObject("search", "");}
+		return mv;
+	}
+	
+	@RequestMapping(value="/issue-return", method=RequestMethod.GET)
+	public ModelAndView issueReturnBook(HttpServletRequest request) {
+		if (request.getSession()
+				.getAttribute("usertype") == null /* || !optionsJDBCTemplate.checkStatus("issue_return_books") */){ return new ModelAndView("redirect:login"); }
+//		String usertype = (String) request.getSession().getAttribute("usertype");
+		/*
+		 * if(!usertype.matches("admin")) { return new ModelAndView("redirect:login"); }
+		 */
+		List<User> users = userJDBCTemplate.listUsers();
+		List<Book> books = bookJDBCTemplate.listBooks();
+		ModelAndView mv = new ModelAndView("IssueReturnPage");
+		mv.addObject("status", false);
+		String catname = (String) request.getSession().getAttribute("category_name");
+		mv.addObject("category",catname);
+		
+		String username = (String) request.getSession().getAttribute("user");
+		User user = userJDBCTemplate.getUser(username);
+		if(user == null) { return new ModelAndView("redirect:logout"); }
+		mv.addObject("user", user.getName());
+		mv.addObject("users", users);
+		mv.addObject("books", books);
+		return mv;
+	}
+	
+	@RequestMapping(value="/issue-return", method=RequestMethod.POST)
+	public ModelAndView issueReturnForm(HttpServletRequest request,
+			@RequestParam(value = "username", required = false, defaultValue = "") String username,
+			@RequestParam(value = "bookid", required = false, defaultValue = "0") Integer bookid) {
+		if (request.getSession()
+				.getAttribute("usertype") == null /* || !optionsJDBCTemplate.checkStatus("issue_return_books") */){ return new ModelAndView("redirect:login"); }
+//		String usertype = (String) request.getSession().getAttribute("usertype");
+		/*
+		 * if(!usertype.matches("admin")) { return new ModelAndView("redirect:login"); }
+		 */
+		
+		HttpSession session = request.getSession();
+		List<User> users = userJDBCTemplate.listUsers();
+		List<Book> books = bookJDBCTemplate.listBooks();
+		ModelAndView mv = new ModelAndView("IssueReturnPage");
+		//Adding Components to page
+
+		String catname = (String) session.getAttribute("category_name");
+		mv.addObject("category",catname);
+		
+		String counter_username = (String) session.getAttribute("user");
+		User user = userJDBCTemplate.getUser(counter_username);
+		if(user == null) { return new ModelAndView("redirect:logout"); }
+		Response resp = bookJDBCTemplate.toggleIssueReturn(bookid, username, user.getUsername());
+		mv.addObject("status", resp.status);
+		mv.addObject("errorMessage", resp.message);
+		mv.addObject("user", user.getName());
+		mv.addObject("users", users);
+		mv.addObject("books", books);
 		return mv;
 	}
 	
