@@ -19,6 +19,8 @@ import com.mini.cbse.Book.BookJDBCTemplate;
 import com.mini.cbse.Category.Category;
 import com.mini.cbse.Category.CategoryJDBCTemplate;
 import com.mini.cbse.Category.Component;
+import com.mini.cbse.Train.TrainJDBCTemplate;
+import com.mini.cbse.Train.TrainSchedule;
 //import com.mini.cbse.Options.optionsJDBCTemplate;
 import com.mini.cbse.User.User;
 import com.mini.cbse.User.UserJDBCTemplate;
@@ -34,12 +36,14 @@ public class MainController {
 	BookJDBCTemplate bookJDBCTemplate = (BookJDBCTemplate)context.getBean("bookJDBCTemplate");
 	UserJDBCTemplate userJDBCTemplate = (UserJDBCTemplate)context.getBean("userJDBCTemplate");
 	CategoryJDBCTemplate categoryJDBCTemplate = (CategoryJDBCTemplate)context.getBean("categoryJDBCTemplate");
+	TrainJDBCTemplate trainJDBCTemplate = (TrainJDBCTemplate)context.getBean("trainJDBCTemplate");
 //	optionsJDBCTemplate optionsJDBCTemplate = (optionsJDBCTemplate)context.getBean("optionsJDBCTemplate");
 
 	@RequestMapping(value="/", method=RequestMethod.GET)
 	public ModelAndView indexGET(HttpServletRequest request) {
 		if(request.getSession().getAttribute("user") != null) { return new ModelAndView("redirect:home"); }
 		ModelAndView mv = new ModelAndView("login");
+
 		String loginid = "";
 		String password = "";
 		mv.addObject("status", false);

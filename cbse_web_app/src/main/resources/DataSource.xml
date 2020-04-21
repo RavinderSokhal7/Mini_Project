@@ -30,6 +30,12 @@
       class = "com.mini.cbse.Category.CategoryJDBCTemplate">
       <property name = "dataSource" ref = "dataSource" />    
    </bean>
+   
+   <!-- Definition for trainJDBCTemplate bean -->
+   <bean id = "trainJDBCTemplate" 
+      class = "com.mini.cbse.Train.TrainJDBCTemplate">
+      <property name = "dataSource" ref = "dataSource" />    
+   </bean>
 	<!-- Definition for userJDBCTemplate bean
    <bean id = "optionsJDBCTemplate" 
       class = "com.mini.Library.Options.optionsJDBCTemplate">
