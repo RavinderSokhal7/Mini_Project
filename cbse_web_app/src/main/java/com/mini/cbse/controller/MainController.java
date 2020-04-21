@@ -380,30 +380,86 @@ public class MainController {
 		return mv;
 	}
 	
+	@RequestMapping(value="/add-book", method=RequestMethod.GET)
+	public ModelAndView addBooksGet(HttpServletRequest request) {
+		if (request.getSession()
+				.getAttribute("usertype") == null /* || !optionsJDBCTemplate.checkStatus("issue_return_books") */){ return new ModelAndView("redirect:login"); }
+//		String usertype = (String) request.getSession().getAttribute("usertype");
+		/*
+		 * if(!usertype.matches("admin")) { return new ModelAndView("redirect:login"); }
+		 */
+		ModelAndView mv = new ModelAndView("AddBookPage");
+		mv.addObject("status", false);
+		String catname = (String) request.getSession().getAttribute("category_name");
+		mv.addObject("category",catname);
+		
+		String username = (String) request.getSession().getAttribute("user");
+		User user = userJDBCTemplate.getUser(username);
+		if(user == null) { return new ModelAndView("redirect:logout"); }
+		mv.addObject("user", user.getName());
+		
+		return mv;
+	}
+	@RequestMapping(value="/edit-book", method=RequestMethod.GET)
+	public ModelAndView editBooksGet(HttpServletRequest request) {
+		if (request.getSession()
+				.getAttribute("usertype") == null /* || !optionsJDBCTemplate.checkStatus("issue_return_books") */){ return new ModelAndView("redirect:login"); }
+//		String usertype = (String) request.getSession().getAttribute("usertype");
+		/*
+		 * if(!usertype.matches("admin")) { return new ModelAndView("redirect:login"); }
+		 */
+		List<Book> books = bookJDBCTemplate.listBooks();
+		ModelAndView mv = new ModelAndView("EditBookPage");
+		mv.addObject("status", false);
+		String catname = (String) request.getSession().getAttribute("category_name");
+		mv.addObject("category",catname);
+		mv.addObject("books", books);
+		
+		String username = (String) request.getSession().getAttribute("user");
+		User user = userJDBCTemplate.getUser(username);
+		if(user == null) { return new ModelAndView("redirect:logout"); }
+		mv.addObject("user", user.getName());
+		
+		return mv;
+	}
+	
 	@RequestMapping(value="/add-book", method=RequestMethod.POST)
 	public ModelAndView addBooks(HttpServletRequest request,@RequestParam(value = "name", required = false, defaultValue = "") String name,
 			@RequestParam(value = "author", required = false, defaultValue = "") String author,@RequestParam(value = "copies", required = false, defaultValue = "0") Integer copies) {
 		HttpSession session = request.getSession();
+		ModelAndView mv = new ModelAndView("AddBookPage");
 		if (session
-				.getAttribute("usertype") == null /* || !optionsJDBCTemplate.checkStatus("update_booklist") */){ return new ModelAndView("redirect:books"); }
+				.getAttribute("usertype") == null /* || !optionsJDBCTemplate.checkStatus("update_booklist") */){ return new ModelAndView("redirect:login"); }
 //		String usertype = (String) session.getAttribute("usertype");
-		if((name.length() == 0 || name.length() >= 50) || (author.length() == 0 || author.length() >= 50) || copies < 0) { return new ModelAndView("redirect:books"); }
+		if((name.length() == 0 || name.length() >= 50) || (author.length() == 0 || author.length() >= 50) || copies < 0) { return new ModelAndView("redirect:AddBookPage"); }
 //		if(usertype.matches("admin")) { bookJDBCTemplate.create(name, author, copies, copies); }
+
+		String catname = (String) session.getAttribute("category_name");
+		mv.addObject("category",catname);
 		Response resp = bookJDBCTemplate.create(name, author, copies, copies);
-		return new ModelAndView("redirect:books");
+		mv.addObject("status", resp.status);
+		mv.addObject("errorMessage", resp.message);
+		return mv;
 	}
 	
 	@RequestMapping(value="/edit-book", method=RequestMethod.POST)
-	public ModelAndView addBooks(HttpServletRequest request,@RequestParam(value = "bookid", required = false, defaultValue = "-1") Integer bookid,
+	public ModelAndView editBooks(HttpServletRequest request,@RequestParam(value = "bookid", required = false, defaultValue = "-1") Integer bookid,
 			@RequestParam(value = "total", required = false, defaultValue = "0") Integer total,@RequestParam(value = "rem", required = false, defaultValue = "0") Integer rem) {
 		HttpSession session = request.getSession();
+		ModelAndView mv = new ModelAndView("EditBookPage");
 		if (session
-				.getAttribute("usertype") == null /* || !optionsJDBCTemplate.checkStatus("update_booklist") */){ return new ModelAndView("redirect:books"); }
+				.getAttribute("usertype") == null /* || !optionsJDBCTemplate.checkStatus("update_booklist") */){ return new ModelAndView("redirect:login"); }
 //		String usertype = (String) session.getAttribute("usertype");
-		if(bookid == -1 || total < 0 || rem < 0) { return new ModelAndView("redirect:books"); }
+		if(bookid == -1 || total < 0 || rem < 0) { return new ModelAndView("redirect:EditBookPage"); }
 //		if(usertype.matches("admin")) { bookJDBCTemplate.update(bookid, total, rem); }
-		Response resp = bookJDBCTemplate.update(bookid, total, rem); 
-		return new ModelAndView("redirect:books");
+		String catname = (String) session.getAttribute("category_name");
+		mv.addObject("category",catname);
+		Response resp = bookJDBCTemplate.update(bookid, total, rem);
+		List<Book> books = bookJDBCTemplate.listBooks();
+		mv.addObject("books", books);
+		mv.addObject("status", resp.status);
+		mv.addObject("errorMessage", resp.message);
+		return mv;
 	}
 	
 	@RequestMapping(value="/about", method=RequestMethod.GET)

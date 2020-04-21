@@ -1,5 +1,5 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" session="true"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" session="true" errorPage="error.jsp"%>
 
 <!DOCTYPE html>
 <html>
@@ -14,10 +14,8 @@
 
 <body>
 
-<div id="header">
-	<h1><a href="#">${category}</a></h1>
-			
-</div>
+<jsp:include page="HeaderComp.jsp"></jsp:include>
+
 <div id="page">
 	<div id="content">
 		<div id="title"><h2>${category }</h2>

@@ -1,5 +1,5 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" session="true"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" session="true" errorPage="error.jsp"%>
 
 <!DOCTYPE html>
 <html>
@@ -14,10 +14,8 @@
 
 <body>
 
-<div id="header">
-	<h1><a href="#">${category}</a></h1>
-			
-</div>
+<jsp:include page="HeaderComp.jsp"></jsp:include>
+
 <div id="page">
 	<div id="content">
 		<div id="title"><h2>${category }</h2>
@@ -52,9 +50,7 @@
 				<input type="submit" value="Submit" style="width:12%;margin:0;padding:8px 10px;">
 				<p id="errorMessage" <c:if test="${status == false}">style="color:red"</c:if><c:if test="${status == true}">style="color:green"</c:if>>${errorMessage}</p>
 			</form>
-			<form action="construct_page" method= "get">
-				<input type="submit" value="Go Back to Preview Page" style="margin:0;padding:8px 10px;">
-			</form>
+			<jsp:include page="BackToPreviewPageComp.jsp"></jsp:include>
 		</div>
 		</div>
 		

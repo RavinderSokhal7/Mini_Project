@@ -79,7 +79,7 @@ public class BookJDBCTemplate implements BookDAO{
 		if(resp.status == true) {
 //			String SQL = "UPDATE books set total_copies = ?, rem_copies = ? where id = ?";
 			jdbcTemplateObject.update(UPDATE_BOOK, total,rem,id);
-			System.out.println("Updated details of Book with ID = " + id);
+//			System.out.println("Updated details of Book with ID = " + id);
 			resp = new Response(true,"Book Successfully Updated");
 			return resp;
 		}
