@@ -13,14 +13,14 @@
 			<form method="get" action="get-trains">
 				<input id="btn" type="submit" style="width:200px;" value="Get Trains" />
 			</form>
-			
-			<table id="books">
 			<c:if test="${not empty trainSchedules}">
+			<table id="books">
+			
 			<thead><tr><th width="100px">Train No.</th><th width="220px">From Station</th><th width="80px">From arrival time</th>
 			<th width="80px">From departure time</th><th width="220px">To Station</th>
 			<th width="80px">To arrival time</th><th width="80px">To departure time</th><th width="80px">Book Train</th>
 			</tr></thead>
-			</c:if>
+			
 			<tbody>
 				<c:choose>
 					<c:when test="${not empty trainSchedules}">
@@ -41,6 +41,7 @@
 				</c:choose>
 			</tbody>
 			</table>
+			</c:if>
 	</div>
 </body>
 </html>
