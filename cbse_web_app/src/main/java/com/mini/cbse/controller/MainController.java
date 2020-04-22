@@ -265,6 +265,10 @@ public class MainController {
 			mv.addObject("books", Books);
 			
 		}
+		else if(id == 2) {
+			List<TrainSchedule> ts = trainJDBCTemplate.getTrainsByFromToStation("prayagraj", "new delhi");
+//			mv.addObject("trainSchedules", ts);
+		}
 		
 		mv.addObject("components",list);
 		mv.addObject("category",cat.getName());
@@ -292,6 +296,10 @@ public class MainController {
 			List<Book> Books = bookJDBCTemplate.listBooks();
 			mv.addObject("books", Books);
 			
+		}
+		else if(id == 2) {
+			List<TrainSchedule> ts = trainJDBCTemplate.getTrainsByFromToStation("prayagraj", "new delhi");
+//			mv.addObject("trainSchedules", ts);
 		}
 		
 		mv.addObject("components",list);

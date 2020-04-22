@@ -7,7 +7,7 @@
 </head>
 <body>
 Select From City:	
-<select id="city" name="city" onchange="#">
+<select id="city" name="fromCity" onchange="#">
      <option value="empty">Select a City</option>
 <%-- <option value="none" selected disabled hidden> 
       Select an Option 

@@ -10,8 +10,10 @@
 <body>
 		<div class="body" align="center">
 			<table id="books">
+			<c:if test="${not empty books}">
 			<thead><tr><th width="400px">Title</th><th width="220px">Author</th><th width="80px">Copies</th>
-			<c:if test="${usertype eq 'admin'}"><th width="80px">Remaining</th></c:if></tr></thead>
+			<th width="80px">Remaining</th></tr></thead>
+			</c:if>
 			<tbody>
 				<c:choose>
 					<c:when test="${not empty books}">
