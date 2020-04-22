@@ -129,6 +129,7 @@
 <body>
 <p class = "s">Unexpected Error Occurred</p>
 <p class = "d">We are deeply regretted</p>
-<p class = "t">ERROR :: ${message}</p>
+<p class = "t">ERROR :: <%= exception %></p>
+<a href="home">Go Back to Home</a>
 </body>
 </html>

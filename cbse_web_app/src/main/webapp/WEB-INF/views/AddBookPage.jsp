@@ -37,7 +37,7 @@
 				<input type="submit" value="Submit" style="width:12%;margin:0;padding:8px 10px;">
 				<p id="errorMessage" <c:if test="${status == false}">style="color:red"</c:if><c:if test="${status == true}">style="color:green"</c:if>>${errorMessage}</p>
 			</form>
-			<jsp:include page="BackToPreviewPageComp.jsp"></jsp:include>
+			<jsp:include page="components/BackToPreviewPageComp.jsp"></jsp:include>
 		</div>		
 	</div>
 		

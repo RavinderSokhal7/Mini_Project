@@ -23,7 +23,7 @@
 		<div class="body" align="center">
 
 			<c:forEach items="${components }" var="component">
-				<jsp:include page="${component }"></jsp:include>
+				<jsp:include page="components/${component }"></jsp:include>
 			</c:forEach>
 		
 		</div>
