@@ -13,6 +13,7 @@
 			<form method="get" action="get-trains">
 				<input id="btn" type="submit" style="width:200px;" value="Get Trains" />
 			</form>
+			
 			<table id="books">
 			<c:if test="${not empty trainSchedules}">
 			<thead><tr><th width="100px">Train No.</th><th width="220px">From Station</th><th width="80px">From arrival time</th>
