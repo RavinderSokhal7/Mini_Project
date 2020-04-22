@@ -16,29 +16,32 @@
 			<c:if test="${not empty trainSchedules}">
 			<table id="books">
 			
-			<thead><tr><th width="100px">Train No.</th><th width="220px">From Station</th><th width="80px">From arrival time</th>
-			<th width="80px">From departure time</th><th width="220px">To Station</th>
-			<th width="80px">To arrival time</th><th width="80px">To departure time</th><th width="80px">Book Train</th>
-			</tr></thead>
+			<thead>
+				<tr>
+					<th width="200px">Train No.</th>
+					<th width="220px">From Station</th><th width="80px">From arrival time</th>
+					<th width="80px">From departure time</th><th width="220px">To Station</th>
+					<th width="80px">To arrival time</th><th width="80px">To departure time</th>
+					<th width="80px">Book Train</th>
+				</tr>
+			</thead>
 			
 			<tbody>
-				<c:choose>
-					<c:when test="${not empty trainSchedules}">
+					<c:if test="${not empty trainSchedules}">
 					    <c:forEach items="${trainSchedules}" var="ts">
 							<form method="post" action = "book-train">
-							<tr><th width="100px">${ts.train_no}</th><th width="220px">${ts.from }</th><th width="80px">${ts.from_arr }</th>
+							<tr><th width="200px"><input type="text" name="train_no" value="${ts.train_no}" style="width:100%;" readonly/>
+							</th><th width="220px">${ts.from }</th><th width="80px">${ts.from_arr }</th>
 							<th width="80px">${ts.from_dept }</th><th width="220px">${ts.to }</th>
-							<th width="80px">${to_arr }</th><th width="80px">${ts.to_dept }</th><th width="80px"><input id="btn" type="submit" style="width:100%;" value="Book" /></th>
+							<th width="80px">${ts.to_arr }</th><th width="80px">${ts.to_dept }</th>
+							<th width="80px"><input id="btn" type="submit" style="width:100%;" value="Book" /></th>
 							</tr>
 							</form>
 						</c:forEach>
-					</c:when>
-					<c:when test="${empty fromCity }"></c:when>
-					<c:when test="${empty toCity }"></c:when>
-					<c:otherwise>
-						<p id="errorMessage" style="color:red">No Trains Found!</p>
-					</c:otherwise>
-				</c:choose>
+					</c:if>
+					<c:if test="${status == false }">
+						<p id="errorMessage" style="color:red">${errorMessage }</p>
+					</c:if>
 			</tbody>
 			</table>
 			</c:if>

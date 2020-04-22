@@ -15,21 +15,25 @@
 <body>
 
 <jsp:include page="HeaderComp.jsp"></jsp:include>
-
 <div id="page">
 	<div id="content">
 		<div id="title"><h2>${category }</h2>
-		<span class="welcome">Welcome,</span></div>
-		<div class="body" align="center">
-
-			<c:forEach items="${components }" var="component">
-				<jsp:include page="components/${component }"></jsp:include>
-			</c:forEach>
-		
+		<span class="welcome">Welcome,</span>
 		</div>
+		<div class="body" align="center">
+		
+			<form action="book-train-ticket">
+				
+				<jsp:include page="components/SelectDateComp.jsp"></jsp:include>
+				<jsp:include page="components/SelectClassComp.jsp"></jsp:include>
+			</form>
+			<p>${train.train_no } ${train.available }</p>
+		
+		</div>		
 	</div>
 		
 	<div style="clear:both"></div>
+
 </div>
 
 <jsp:include page="footerComp.jsp"></jsp:include>

@@ -22,7 +22,7 @@ import com.mini.cbse.User.User;
 import com.mini.cbse.User.UserJDBCTemplate;
 
 @Controller
-public class LiibraryController {
+public class LibraryController {
 	ApplicationContext context = new ClassPathXmlApplicationContext("DataSource.xml");
 	BookJDBCTemplate bookJDBCTemplate = (BookJDBCTemplate)context.getBean("bookJDBCTemplate");
 	UserJDBCTemplate userJDBCTemplate = (UserJDBCTemplate)context.getBean("userJDBCTemplate");

@@ -18,7 +18,8 @@
 <div id="page">
 	<div id="content">
 		<div id="title"><h2>${category }</h2>
-		<span class="welcome">Welcome,</span></div>
+		<span class="welcome">Welcome,</span>
+		</div>
 		<div class="body" align="center">
 			<form method="post" action="add-book">
 				<h3 style="margin:10px 0;font-size:24px">Add Books</h3>
