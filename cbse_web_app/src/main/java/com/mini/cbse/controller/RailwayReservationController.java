@@ -169,7 +169,6 @@ public class RailwayReservationController {
 		mv.addObject("fromCity",fromCity);
 		mv.addObject("toCity",toCity);
 		
-		
 		return mv;
 	}
 
