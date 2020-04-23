@@ -17,6 +17,8 @@ public class TrainScheduleMapper implements RowMapper<TrainSchedule> {
 		t.setTo(rs.getString("to"));
 		t.setTo_arr(rs.getString("to_arr"));
 		t.setTo_dept(rs.getString("to_dept"));
+		t.setTo_no(rs.getInt("to_no"));
+		t.setFrom_no(rs.getInt("from_no"));
 		
 		return t;
 	}

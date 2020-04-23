@@ -12,10 +12,12 @@
 </head>
 
 <body>
-	<form action="select-date" method = "post" >
-		<label for="date_sel">Select Date: </label>
-		<input type="date" id="date_sel" name="selected_date" onchange="#">
-	</form>
+	<!-- <form action="select-date" method = "post" > -->
+		<div style="margin:10px 0 auto 10px"><label for="date_sel">Select Date: </label>
+		<input type="date" id="date_sel" name="selected_date" onchange="#"></div>
+	<!-- </form> -->
+	
+	
 <!-- <button onclick="myFunction()">Select Date</button>
 <script>
 function myFunction() {

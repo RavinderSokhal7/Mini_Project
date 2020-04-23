@@ -6,6 +6,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 </head>
 <body>
+<div style="margin:10px 0 auto 10px">
 Select Class:	
 <select id="classsel" name="selectedClass" onchange="#">
      
@@ -30,5 +31,6 @@ Select Class:
 <option value="Economy">Economy</option>
 
 </select>
+</div>
 </body>
 </html>

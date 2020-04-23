@@ -18,30 +18,31 @@
 			
 			<thead>
 				<tr>
-					<th width="200px">Train No.</th>
-					<th width="220px">From Station</th><th width="80px">From arrival time</th>
-					<th width="80px">From departure time</th><th width="220px">To Station</th>
+					<th width="180px">Train No.</th><th width="600px">Train Name</th>
+					<th width="200px">From Station</th><th width="80px">station no</th><th width="80px">From arrival time</th>
+					<th width="80px">From departure time</th><th width="200px">To Station</th><th width="80px">station no</th>
 					<th width="80px">To arrival time</th><th width="80px">To departure time</th>
 					<th width="80px">Book Train</th>
 				</tr>
 			</thead>
 			
 			<tbody>
-					<c:if test="${not empty trainSchedules}">
-					    <c:forEach items="${trainSchedules}" var="ts">
-							<form method="post" action = "book-train">
-							<tr><th width="200px"><input type="text" name="train_no" value="${ts.train_no}" style="width:100%;" readonly/>
-							</th><th width="220px">${ts.from }</th><th width="80px">${ts.from_arr }</th>
-							<th width="80px">${ts.from_dept }</th><th width="220px">${ts.to }</th>
-							<th width="80px">${ts.to_arr }</th><th width="80px">${ts.to_dept }</th>
-							<th width="80px"><input id="btn" type="submit" style="width:100%;" value="Book" /></th>
-							</tr>
-							</form>
-						</c:forEach>
-					</c:if>
-					<c:if test="${status == false }">
-						<p id="errorMessage" style="color:red">${errorMessage }</p>
-					</c:if>
+				<c:if test="${not empty trainSchedules}">
+				    <c:forEach items="${trainSchedules}" var="ts">
+						<form method="post" action = "book-train">
+						<tr><th width="180px"><input type="text" name="train_no" value="${ts.train_no}" style="width:70%;" readonly/></th>
+						<th width="300px">${ts.train_name }</th>
+						<th width="200px">${ts.from }</th><th width="80px">${ts.from_no }</th><th width="80px">${ts.from_arr }</th>
+						<th width="80px">${ts.from_dept }</th><th width="200x">${ts.to }</th><th width="50px">${ts.to_no }</th>
+						<th width="80px">${ts.to_arr }</th><th width="80px">${ts.to_dept }</th>
+						<th width="80px"><input id="btn" type="submit" style="width:100%;" value="Book" /></th>
+						</tr>
+						</form>
+					</c:forEach>
+				</c:if>
+				<c:if test="${status == false }">
+					<p id="errorMessage" style="color:red">${errorMessage }</p>
+				</c:if>
 			</tbody>
 			</table>
 			</c:if>

@@ -2,17 +2,27 @@ package com.mini.cbse.Train;
 
 public class TrainSchedule {
 	private int train_no;
+	private String train_name;
 	private String from;
 	private String from_arr;
 	private String from_dept;
 	private String to;
 	private String to_arr;
 	private String to_dept;
+	private int from_no;
+	private int to_no;
+	
 	public int getTrain_no() {
 		return train_no;
 	}
 	public void setTrain_no(int train_no) {
 		this.train_no = train_no;
+	}
+	public String getTrain_name() {
+		return train_name;
+	}
+	public void setTrain_name(String train_name) {
+		this.train_name = train_name;
 	}
 	public String getFrom() {
 		return from;
@@ -49,6 +59,18 @@ public class TrainSchedule {
 	}
 	public void setTo_dept(String to_dept) {
 		this.to_dept = to_dept;
+	}
+	public int getFrom_no() {
+		return from_no;
+	}
+	public void setFrom_no(int from_no) {
+		this.from_no = from_no;
+	}
+	public int getTo_no() {
+		return to_no;
+	}
+	public void setTo_no(int to_no) {
+		this.to_no = to_no;
 	}	
 	
 }

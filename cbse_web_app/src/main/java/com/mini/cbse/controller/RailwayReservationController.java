@@ -1,5 +1,7 @@
 package com.mini.cbse.controller;
 
+import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -87,7 +89,11 @@ public class RailwayReservationController {
 				mv.addObject("errorMessage", "No Trains Found!");
 			}
 			else {
-				mv.addObject("trainSchedules", ts);
+				for(int i=0;i<ts.size();i++) {
+				int tno = ts.get(i).getTrain_no();
+				ts.get(i).setTrain_name(trainJDBCTemplate.getTrainByTno(tno).getTrain_name());
+			}
+			mv.addObject("trainSchedules", ts);
 			}
 			
 		}
@@ -129,6 +135,10 @@ public class RailwayReservationController {
 				mv.addObject("errorMessage", "No Trains Found!");
 			}
 			else {
+				for(int i=0;i<ts.size();i++) {
+					int tno = ts.get(i).getTrain_no();
+					ts.get(i).setTrain_name(trainJDBCTemplate.getTrainByTno(tno).getTrain_name());
+				}
 				mv.addObject("trainSchedules", ts);
 			}
 			
@@ -164,6 +174,16 @@ public class RailwayReservationController {
 		if(user == null) { return new ModelAndView("redirect:logout"); }
 		mv.addObject("user", user);
 		Train train = trainJDBCTemplate.getTrainByTno(train_no);
+		List<TrainSchedule> tranSch= trainJDBCTemplate.getTrainsByFromToStation(fromCity, toCity);
+		TrainSchedule ts=null;
+		for(int i=0;i<tranSch.size();i++) {
+			ts = tranSch.get(i);
+			if(ts.getTrain_no()==train.getTrain_no()) break;
+		}
+		ts.setTrain_name(train.getTrain_name());
+		session.setAttribute("from_no", ts.getFrom_no());
+		session.setAttribute("to_no", ts.getTo_no());
+		mv.addObject("ts", ts);
 		mv.addObject("train", train);
 		mv.addObject("category", catname);
 		mv.addObject("fromCity",fromCity);
@@ -172,6 +192,72 @@ public class RailwayReservationController {
 		return mv;
 	}
 
+	@RequestMapping(value = "/book-train-ticket", method = RequestMethod.POST)
+	public ModelAndView bookTrainTicket(HttpServletRequest request,
+//			@RequestParam(value="date") String date,
+			@RequestParam(value="selectedClass") String selectedClass,
+			@RequestParam(value="adult")int adult,
+			@RequestParam(value="child")int child,
+			@RequestParam(value="train_no")int train_no) {
+		HttpSession session = request.getSession();
+		String date = request.getParameter("date").toString();
+		boolean status=false;
+		String msg = null;
+		ModelAndView mv = new ModelAndView("BookTrainPage");
+		String fromCity = (String)session.getAttribute("fromCity");
+		String toCity = (String)session.getAttribute("toCity");
+		int from_no = (int)session.getAttribute("from_no");
+		int to_no = (int)session.getAttribute("to_no");
+		String catname = (String)session.getAttribute("category_name");
+		String counter_username = (String) session.getAttribute("user");
+		User user = userJDBCTemplate.getUser(counter_username);
+		if(user == null) { return new ModelAndView("redirect:logout"); }
+		mv.addObject("user", user);
+		Train train = trainJDBCTemplate.getTrainByTno(train_no);
+		List<TrainSchedule> tranSch= trainJDBCTemplate.getTrainsByFromToStation(fromCity, toCity);
+		TrainSchedule ts=null;
+		for(int i=0;i<tranSch.size();i++) {
+			ts = tranSch.get(i);
+			if(ts.getTrain_no()==train.getTrain_no()) break;
+		}
+		ts.setTrain_name(train.getTrain_name());
+		/*
+		 * Check availability and Calculate Cost
+		 */
+		int passengers = adult+child;
+		if(passengers!=0) {
+			int av_seat = trainJDBCTemplate.getAvailableSeats(train_no);
+			if(passengers <= av_seat) {
+				int farepp = trainJDBCTemplate.getTicketCost(train_no,ts.getFrom_no(),ts.getTo_no(),selectedClass.toLowerCase());
+				int total_cost = (passengers)*farepp;
+				int reservation_id = trainJDBCTemplate.
+						makeReservation(user.getUsername(),user.getName(),ts,date,selectedClass,adult,child,total_cost);
+				mv.setViewName("TrainBillPage");
+				mv.addObject("farepp", farepp);
+				mv.addObject("total_cost",total_cost);
+				mv.addObject("reservation_id", reservation_id);
+				status = true;
+				msg = "Bill Generated successfully";
+				/*
+				 * generate bill should be the book ticket btn ... in Train bill one pay btn which results in decreasing of available
+				 *  seats. Make entry in reservatoin table...
+				 */
+			}
+			else {
+				msg = "seats not available!"+"only "+av_seat+" left!";
+			}
+			
+		}
+		
+		//
+		mv.addObject("ts", ts);
+		mv.addObject("train", train);
+		mv.addObject("category", catname);
+		mv.addObject("status", status);
+		mv.addObject("errorMessage",msg);
+		return mv;
+	}
+	
 }
 
 
