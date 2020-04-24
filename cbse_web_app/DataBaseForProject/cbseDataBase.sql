@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `cbse` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `cbse`;
 -- MySQL dump 10.13  Distrib 8.0.16, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: cbse
@@ -88,7 +90,7 @@ CREATE TABLE `component` (
 
 LOCK TABLES `component` WRITE;
 /*!40000 ALTER TABLE `component` DISABLE KEYS */;
-INSERT INTO `component` VALUES (1,1,'SearchComp.jsp','Search Books'),(2,1,'ShowBooksComp.jsp','Show Books'),(3,1,'IssueReturnComp.jsp','Issue/Return Books'),(4,1,'AddBookComp.jsp','Add Books to the Library System'),(5,1,'EditBookComp.jsp','Edit Books in the Library System'),(6,2,'FromCityComp.jsp','Select train boarding city (From city)'),(7,2,'ToCityComp.jsp','Select to city'),(8,2,'GetTrainsComp.jsp','Get trains'),(9,2,'BookTrainComp.jsp','Book train'),(10,2,'SelectDateComp.jsp','Select Boarding Date'),(11,2,'SelectClassComp.jsp','Select class of coach for boarding'),(12,2,'SelectPassengerComp.jsp','Select passengers'),(13,2,'GenerateBillComp.jsp','Generate bill');
+INSERT INTO `component` VALUES (1,1,'SearchComp.jsp','Search Books'),(2,1,'ShowBooksComp.jsp','Show Books'),(3,1,'IssueReturnComp.jsp','Issue/Return Books'),(4,1,'AddBookComp.jsp','Add Books to the Library System'),(5,1,'EditBookComp.jsp','Edit Books in the Library System'),(6,3,'SelectCityComp.jsp','Select city'),(7,2,'FTCityComp.jsp','Select from to city'),(8,2,'GetTrainsComp.jsp','Get trains'),(9,2,'SelectTrainNoComp.jsp','Select Train No.'),(10,2,'SelectDateComp.jsp','Select Boarding Date'),(11,2,'SelectClassComp.jsp','Select class of coach for boarding'),(12,2,'SelectPassengerComp.jsp','Select passengers'),(13,2,'GenerateBillComp.jsp','Generate bill');
 /*!40000 ALTER TABLE `component` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -187,16 +189,20 @@ DROP TABLE IF EXISTS `reservations`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `reservations` (
-  `pnr` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `train_no` int(11) NOT NULL,
   `from_station` varchar(45) NOT NULL,
   `to_station` varchar(45) NOT NULL,
-  `seat` int(11) NOT NULL,
+  `adult` int(11) NOT NULL,
   `class` varchar(20) NOT NULL,
   `date_of_boarding` varchar(45) NOT NULL,
-  `date_of_reservation` datetime NOT NULL,
-  PRIMARY KEY (`pnr`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `child` int(11) NOT NULL,
+  `total_cost` int(11) NOT NULL,
+  `train_name` varchar(45) NOT NULL,
+  `username` varchar(45) NOT NULL,
+  `name` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -205,6 +211,7 @@ CREATE TABLE `reservations` (
 
 LOCK TABLES `reservations` WRITE;
 /*!40000 ALTER TABLE `reservations` DISABLE KEYS */;
+INSERT INTO `reservations` VALUES (5,12417,'prayagraj','new delhi',1,'3rd ac','dummy',1,1980,'Prayag Raj Express','spydee','Spider Man'),(6,12417,'prayagraj','new delhi',1,'3rd ac','dummy',2,2970,'Prayag Raj Express','spydee','Spider Man'),(7,12417,'prayagraj','new delhi',1,'3rd ac','dummy',0,990,'Prayag Raj Express','spydee','Spider Man'),(8,12417,'prayagraj','new delhi',1,'3rd ac','dummy',0,990,'Prayag Raj Express','spydee','Spider Man'),(9,12417,'prayagraj','new delhi',1,'3rd ac','dummy',0,990,'Prayag Raj Express','spydee','Spider Man'),(10,12417,'prayagraj','new delhi',3,'3rd ac','Tue Oct 11 00:00:00 IST 35',0,2970,'Prayag Raj Express','spydee','Spider Man'),(11,12417,'prayagraj','new delhi',1,'sleeper','Tue Apr 04 00:00:00 IST 198',0,400,'Prayag Raj Express','spydee','Spider Man'),(12,12417,'prayagraj','new delhi',1,'3rd ac','2020-06-01',0,990,'Prayag Raj Express','spydee','Spider Man'),(13,12417,'prayagraj','new delhi',1,'3rd ac','10-60-0202',0,990,'Prayag Raj Express','spydee','Spider Man'),(14,12417,'prayagraj','new delhi',1,'3rd ac','Sat Dec 11 00:00:00 IST 6',0,990,'Prayag Raj Express','spydee','Spider Man'),(15,12417,'prayagraj','new delhi',1,'3rd ac','11-12-0006',0,990,'Prayag Raj Express','spydee','Spider Man'),(16,12417,'prayagraj','new delhi',1,'3rd ac','11-12-0006',0,990,'Prayag Raj Express','spydee','Spider Man'),(17,12417,'prayagraj','new delhi',1,'3rd ac','2020-06-01',0,990,'Prayag Raj Express','spydee','Spider Man'),(18,12417,'prayagraj','new delhi',1,'3rd ac','2020-06-01',0,990,'Prayag Raj Express','spydee','Spider Man'),(19,12417,'prayagraj','new delhi',1,'sleeper','2020-04-27',0,400,'Prayag Raj Express','spydee','Spider Man'),(20,12417,'prayagraj','new delhi',2,'sleeper','2020-05-01',0,800,'Prayag Raj Express','spydee','Spider Man'),(21,12417,'prayagraj','ghaziabad',1,'3rd ac','2020-04-23',0,800,'Prayag Raj Express','spydee','Spider Man');
 /*!40000 ALTER TABLE `reservations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -234,6 +241,34 @@ LOCK TABLES `train` WRITE;
 /*!40000 ALTER TABLE `train` DISABLE KEYS */;
 INSERT INTO `train` VALUES (10101,'dummy','prayagraj','new delhi',500,500),(12417,'Prayag Raj Express','prayagraj','new delhi',1000,1000);
 /*!40000 ALTER TABLE `train` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `train_cost`
+--
+
+DROP TABLE IF EXISTS `train_cost`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `train_cost` (
+  `id` int(11) NOT NULL,
+  `train_no` int(11) NOT NULL,
+  `from_station_no` int(11) NOT NULL,
+  `to_station_no` int(11) NOT NULL,
+  `class` varchar(45) NOT NULL,
+  `cost` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `train_cost`
+--
+
+LOCK TABLES `train_cost` WRITE;
+/*!40000 ALTER TABLE `train_cost` DISABLE KEYS */;
+INSERT INTO `train_cost` VALUES (1,12417,0,5,'3rd ac',990),(2,12417,0,5,'sleeper',400),(3,12417,0,4,'3rd ac',800);
+/*!40000 ALTER TABLE `train_cost` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -300,4 +335,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-04-22 15:28:12
+-- Dump completed on 2020-04-24 20:01:00
