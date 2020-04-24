@@ -10,8 +10,8 @@
 
 	<div style="margin:10px 0 auto 10px">
 		<label style="display:block">Select Passengers (Number of Adult and Child passengers) :</label>
-		<input type="number" name="adult" style="padding:8px 10px;width:100px;border: 1px solid #999;" max-length="10" placeholder="Adults#" required>
-		<input type="number" name="child" style="padding:8px 10px;width:100px;border: 1px solid #999;" max-length="10" placeholder="Children#" required>
+		<input type="number" name="adult" style="padding:8px 10px;width:100px;border: 1px solid #999;" min="0" max-length="10" placeholder="Adults#" required>
+		<input type="number" name="child" style="padding:8px 10px;width:100px;border: 1px solid #999;" min="0" max-length="10" placeholder="Children#" required>
 	</div>
 	
 </body>

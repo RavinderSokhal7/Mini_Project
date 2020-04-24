@@ -1,6 +1,8 @@
 package com.mini.cbse.controller;
 
 import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,6 +82,8 @@ public class RailwayReservationController {
 		if(user == null) { return new ModelAndView("redirect:logout"); }
 		mv.addObject("user", user);
 		List<String> list = (List<String>)session.getAttribute("components");
+		List<String> bookTicket = (List<String>)session.getAttribute("bookTicket");
+		mv.addObject("bookTicket",bookTicket);
 		mv.addObject("components", list);
 		mv.addObject("category",catname);
 		if(fromCity!=null && toCity!=null) {
@@ -126,6 +130,8 @@ public class RailwayReservationController {
 		if(user == null) { return new ModelAndView("redirect:logout"); }
 		mv.addObject("user", user);
 		List<String> list = (List<String>)session.getAttribute("components");
+		List<String> bookTicket = (List<String>)session.getAttribute("bookTicket");
+		mv.addObject("bookTicket",bookTicket);
 		mv.addObject("components", list);
 		mv.addObject("category",catname);
 		if(fromCity!=null && toCity!=null) {
@@ -200,14 +206,14 @@ public class RailwayReservationController {
 			@RequestParam(value="child")int child,
 			@RequestParam(value="train_no")int train_no) {
 		HttpSession session = request.getSession();
-		String date = request.getParameter("date").toString();
+		String[] datearr = request.getParameterValues("selected_date");
+		String date = datearr[0];
 		boolean status=false;
 		String msg = null;
+		int f=0;
 		ModelAndView mv = new ModelAndView("BookTrainPage");
 		String fromCity = (String)session.getAttribute("fromCity");
 		String toCity = (String)session.getAttribute("toCity");
-		int from_no = (int)session.getAttribute("from_no");
-		int to_no = (int)session.getAttribute("to_no");
 		String catname = (String)session.getAttribute("category_name");
 		String counter_username = (String) session.getAttribute("user");
 		User user = userJDBCTemplate.getUser(counter_username);
@@ -218,35 +224,136 @@ public class RailwayReservationController {
 		TrainSchedule ts=null;
 		for(int i=0;i<tranSch.size();i++) {
 			ts = tranSch.get(i);
-			if(ts.getTrain_no()==train.getTrain_no()) break;
+			if(ts.getTrain_no()==train.getTrain_no()) { f=1; ts.setTrain_name(train.getTrain_name()); break;}
 		}
-		ts.setTrain_name(train.getTrain_name());
 		/*
 		 * Check availability and Calculate Cost
 		 */
 		int passengers = adult+child;
-		if(passengers!=0) {
+		if(passengers>0 && f==1) {
 			int av_seat = trainJDBCTemplate.getAvailableSeats(train_no);
 			if(passengers <= av_seat) {
 				int farepp = trainJDBCTemplate.getTicketCost(train_no,ts.getFrom_no(),ts.getTo_no(),selectedClass.toLowerCase());
+				
+				if(farepp == -1) System.out.println("Train_cost table need to be updated for this transaction");
+				
 				int total_cost = (passengers)*farepp;
 				int reservation_id = trainJDBCTemplate.
-						makeReservation(user.getUsername(),user.getName(),ts,date,selectedClass,adult,child,total_cost);
+						makeReservation(user.getUsername(),user.getName(),ts,date,selectedClass.toLowerCase(),adult,child,total_cost);
 				mv.setViewName("TrainBillPage");
 				mv.addObject("farepp", farepp);
 				mv.addObject("total_cost",total_cost);
 				mv.addObject("reservation_id", reservation_id);
+				mv.addObject("date", date);
+				mv.addObject("selectedClass", selectedClass);
+				mv.addObject("adult", adult);
+				mv.addObject("child", child);
+				
 				status = true;
 				msg = "Bill Generated successfully";
-				/*
-				 * generate bill should be the book ticket btn ... in Train bill one pay btn which results in decreasing of available
-				 *  seats. Make entry in reservatoin table...
-				 */
 			}
 			else {
 				msg = "seats not available!"+"only "+av_seat+" left!";
 			}
 			
+		}
+		else {
+			msg="Select Passengers(>1) and select From to city (or No trains Available for your request)!";
+		}
+		
+		
+		//
+		mv.addObject("ts", ts);
+		mv.addObject("train", train);
+		mv.addObject("category", catname);
+		mv.addObject("status", status);
+		mv.addObject("errorMessage",msg);
+		return mv;
+	}
+	
+	@RequestMapping(value = "/book-train-ticket-from-constructed-page", method = RequestMethod.POST)
+	public ModelAndView bookTrainTicketFromConstructedPage(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		List<String> bookTicket = (List<String>)session.getAttribute("bookTicket");
+		if( !bookTicket.contains("SelectTrainNoComp.jsp") || !bookTicket.contains("SelectDateComp.jsp")
+				|| !bookTicket.contains("SelectClassComp.jsp") || !bookTicket.contains("SelectPassengerComp.jsp")) {
+			ModelAndView mv = new ModelAndView("constructed_page");
+			List<String> list = (List<String>)session.getAttribute("components");
+			String catname = (String)session.getAttribute("category_name");
+			String counter_username = (String) session.getAttribute("user");
+			User user = userJDBCTemplate.getUser(counter_username);
+			if(user == null) { return new ModelAndView("redirect:logout"); }
+			mv.addObject("user", user);
+			mv.addObject("category", catname);
+			mv.addObject("components",list);
+			mv.addObject("bookTicket", bookTicket);
+			mv.addObject("errorMessage", "More Information Needed To Book Ticket!"
+					+ "\nTry Book Option in Get Trains or"
+					+ "\nTry Selecting all Components :)");
+			mv.addObject("status", false);
+			return mv;
+		}
+		
+		int f=0;
+		String[] datearr = request.getParameterValues("selected_date");
+		String date = datearr[0];
+		// Get Params
+		String selectedClass = request.getParameter("selectedClass");
+		int adult = Integer.parseInt(request.getParameter("adult"));
+		int child = Integer.parseInt(request.getParameter("child"));
+		int train_no = Integer.parseInt(request.getParameter("train_no"));
+		
+		boolean status=false;
+		String msg = null;
+		ModelAndView mv = new ModelAndView("constructed_page");
+		String fromCity = (String)session.getAttribute("fromCity");
+		String toCity = (String)session.getAttribute("toCity");
+		String catname = (String)session.getAttribute("category_name");
+		String counter_username = (String) session.getAttribute("user");
+		User user = userJDBCTemplate.getUser(counter_username);
+		if(user == null) { return new ModelAndView("redirect:logout"); }
+		mv.addObject("user", user);
+		Train train = trainJDBCTemplate.getTrainByTno(train_no);
+		List<TrainSchedule> tranSch= trainJDBCTemplate.getTrainsByFromToStation(fromCity, toCity);
+		TrainSchedule ts=null;
+		for(int i=0;i<tranSch.size();i++) {
+			ts = tranSch.get(i);
+			if(ts.getTrain_no()==train.getTrain_no()) { f=1;ts.setTrain_name(train.getTrain_name()); break;}
+		}
+		
+		/*
+		 * Check availability and Calculate Cost
+		 */
+		int passengers = adult+child;
+		if(passengers>0 && f==1) {
+			int av_seat = trainJDBCTemplate.getAvailableSeats(train_no);
+			if(passengers <= av_seat) {
+				int farepp = trainJDBCTemplate.getTicketCost(train_no,ts.getFrom_no(),ts.getTo_no(),selectedClass.toLowerCase());
+				
+				if(farepp == -1) System.out.println("Train_cost table need to be updated for this transaction");
+				
+				int total_cost = (passengers)*farepp;
+				int reservation_id = trainJDBCTemplate.
+						makeReservation(user.getUsername(),user.getName(),ts,date,selectedClass.toLowerCase(),adult,child,total_cost);
+				mv.setViewName("TrainBillPage");
+				mv.addObject("farepp", farepp);
+				mv.addObject("total_cost",total_cost);
+				mv.addObject("reservation_id", reservation_id);
+				mv.addObject("date", date);
+				mv.addObject("selectedClass", selectedClass);
+				mv.addObject("adult", adult);
+				mv.addObject("child", child);
+				
+				status = true;
+				msg = "Bill Generated successfully";
+			}
+			else {
+				msg = "seats not available!"+"only "+av_seat+" left!";
+			}
+			
+		}
+		else {
+			msg="Select Passengers(>1) and select From to city (or No trains Available for your request)!";
 		}
 		
 		//

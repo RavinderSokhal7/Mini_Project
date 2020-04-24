@@ -25,7 +25,22 @@
 			<c:forEach items="${components }" var="component">
 				<jsp:include page="components/${component }"></jsp:include>
 			</c:forEach>
-		
+			
+			
+			<c:if test="${not empty bookTicket }">
+			<div class="body" align="center">
+			<fieldset class="box" >
+				<form action="book-train-ticket-from-constructed-page" method="post" >
+					<h3 style="margin:10px 0 auto 10px;font-size:24px;align:center;">Fill Form to book ticket</h3>
+					<c:forEach items="${bookTicket }" var="component">
+						<jsp:include page="components/${component }"></jsp:include>
+					</c:forEach>
+				</form>
+				</fieldset></div>
+			</c:if>
+			<c:if test="${status == false }">
+				<p id="errorMessage" style="color:red">${errorMessage }</p>
+			</c:if>
 		</div>
 	</div>
 		

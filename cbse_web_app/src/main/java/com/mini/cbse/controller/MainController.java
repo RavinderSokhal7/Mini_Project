@@ -1,5 +1,6 @@
 package com.mini.cbse.controller;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -266,8 +267,9 @@ public class MainController {
 			
 		}
 		else if(id == 2) {
-			List<TrainSchedule> ts = trainJDBCTemplate.getTrainsByFromToStation("prayagraj", "new delhi");
-//			mv.addObject("trainSchedules", ts);
+
+			List<String> bookTicket = (List<String>)session.getAttribute("bookTicket");
+			mv.addObject("bookTicket",bookTicket);
 		}
 		
 		mv.addObject("components",list);
@@ -287,7 +289,7 @@ public class MainController {
 		Category cat = categoryJDBCTemplate.getCategoryById(id);
 		String[] components = request.getParameterValues("components");
 		List<String> list = null;
-		if(components!=null) { list = Arrays.asList(components);}
+		if(components!=null) { list = new ArrayList<String>(Arrays.asList(components));}
 		
 		session.setAttribute("components", list);
 		session.setAttribute("category_name", cat.getName());
@@ -298,8 +300,19 @@ public class MainController {
 			
 		}
 		else if(id == 2) {
-			List<TrainSchedule> ts = trainJDBCTemplate.getTrainsByFromToStation("prayagraj", "new delhi");
-//			mv.addObject("trainSchedules", ts);
+			List<String> bookTicket = new ArrayList<String>();
+			for(String s: list) {
+				if(s.equalsIgnoreCase("SelectTrainNoComp.jsp")||s.equalsIgnoreCase("SelectDateComp.jsp")||
+						s.equalsIgnoreCase("SelectClassComp.jsp")||s.equalsIgnoreCase("SelectPassengerComp.jsp")||
+						s.equalsIgnoreCase("GenerateBillComp.jsp")) {
+					bookTicket.add(s);
+				}
+			}
+			for(String s: bookTicket) {
+				list.remove((Object)s);
+			}
+			session.setAttribute("bookTicket", bookTicket);
+			mv.addObject("bookTicket", bookTicket);
 		}
 		
 		mv.addObject("components",list);

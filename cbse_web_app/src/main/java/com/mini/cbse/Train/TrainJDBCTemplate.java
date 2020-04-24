@@ -1,11 +1,15 @@
 package com.mini.cbse.Train;
 
 import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.util.List;
 
 import javax.sql.DataSource;
 
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 public class TrainJDBCTemplate implements TrainDAO {
@@ -29,7 +33,7 @@ public class TrainJDBCTemplate implements TrainDAO {
 			"where train_no = ? and from_station_no=? and to_station_no=? and class=?;";
 	private String GET_TRAIN_AVAILABLE_SEATS = "select available_seat from train where train_no=?;";
 	private String MAKE_RESERVATION = "INSERT INTO `cbse`.`reservations`\r\n" + 
-			"`train_no`,\r\n" + 
+			"(`train_no`,\r\n" + 
 			"`from_station`,\r\n" + 
 			"`to_station`,\r\n" + 
 			"`adult`,\r\n" + 
@@ -42,6 +46,7 @@ public class TrainJDBCTemplate implements TrainDAO {
 			"`name`)\r\n" + 
 			"VALUES\r\n" + 
 			"(?,?,?,?,?,?,?,?,?,?,?);";
+	private String GET_RESR_ID = "";
 	
 	@Override
 	public void setDataSource(DataSource dataSource) {
@@ -70,21 +75,38 @@ public class TrainJDBCTemplate implements TrainDAO {
 	@Override
 	public int getTicketCost(int train_no, int from_no, int to_no, String selectedClass) {
 		SqlRowSet rs = jdbcTemplateObject.queryForRowSet(GET_TICKET_COST, train_no,from_no,to_no,selectedClass);
+		if(rs.next())
 		return rs.getInt("cost");
+		return -1;
 	}
 
 	@Override
 	public int getAvailableSeats(int train_no) {
 		SqlRowSet rs = jdbcTemplateObject.queryForRowSet(GET_TRAIN_AVAILABLE_SEATS, train_no);
+		if(rs.next())
 		return rs.getInt("available_seat");
+		return -1;
 	}
 
 	@Override
 	public int makeReservation(String username, String name, TrainSchedule ts, String date, String selectedClass,
 			int adult, int child, int total_cost) {
-		int rsid = jdbcTemplateObject.update(MAKE_RESERVATION,ts.getTrain_no(),ts.getFrom(),ts.getTo(),
-				adult,selectedClass,date,child,total_cost,ts.getTrain_name(),username,name);
-		return rsid+reservation_id_add;
+//		jdbcTemplateObject.update(MAKE_RESERVATION,ts.getTrain_no(),ts.getFrom(),ts.getTo(),
+//				adult,selectedClass,date,child,total_cost,ts.getTrain_name(),username,name);
+//		SqlRowSet rs = jdbcTemplateObject.queryForRowSet(GET_RESR_ID, ts.getTrain_no(),ts.getFrom(),ts.getTo(),
+//				adult,selectedClass,date,child,total_cost,ts.getTrain_name(),username,name);
+		KeyHolder keyHolder = new GeneratedKeyHolder();
+		 
+	    jdbcTemplateObject.update(connection -> {
+	        PreparedStatement ps = connection
+	          .prepareStatement(MAKE_RESERVATION, Statement.RETURN_GENERATED_KEYS);
+	          ps.setInt(1, ts.getTrain_no());ps.setString(2, ts.getFrom());ps.setString(3, ts.getTo());
+	          ps.setInt(4, adult);ps.setString(5, selectedClass);ps.setString(6, date);ps.setInt(7, child);
+	          ps.setInt(8, total_cost);ps.setString(9, ts.getTrain_name());ps.setString(10, username);ps.setString(11, name);
+	          return ps;
+	        }, keyHolder);
+	    int rid =  keyHolder.getKey().intValue();
+	    return rid+reservation_id_add;
 	}
 
 }
