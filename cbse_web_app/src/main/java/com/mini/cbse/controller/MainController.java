@@ -301,15 +301,17 @@ public class MainController {
 		}
 		else if(id == 2) {
 			List<String> bookTicket = new ArrayList<String>();
-			for(String s: list) {
-				if(s.equalsIgnoreCase("SelectTrainNoComp.jsp")||s.equalsIgnoreCase("SelectDateComp.jsp")||
-						s.equalsIgnoreCase("SelectClassComp.jsp")||s.equalsIgnoreCase("SelectPassengerComp.jsp")||
-						s.equalsIgnoreCase("GenerateBillComp.jsp")) {
-					bookTicket.add(s);
+			if(components!=null) {
+				for(String s: list) {
+					if(s.equalsIgnoreCase("SelectTrainNoComp.jsp")||s.equalsIgnoreCase("SelectDateComp.jsp")||
+							s.equalsIgnoreCase("SelectClassComp.jsp")||s.equalsIgnoreCase("SelectPassengerComp.jsp")||
+							s.equalsIgnoreCase("GenerateBillComp.jsp")) {
+						bookTicket.add(s);
+					}
 				}
-			}
-			for(String s: bookTicket) {
-				list.remove((Object)s);
+				for(String s: bookTicket) {
+					list.remove((Object)s);
+				}
 			}
 			session.setAttribute("bookTicket", bookTicket);
 			mv.addObject("bookTicket", bookTicket);

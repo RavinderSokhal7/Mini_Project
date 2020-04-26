@@ -26,7 +26,7 @@
 				<jsp:include page="components/${component }"></jsp:include>
 			</c:forEach>
 			
-			
+			<c:if test="${category == 'Railway Reservation System' }">
 			<c:if test="${not empty bookTicket }">
 			<div class="body" align="center">
 			<fieldset class="box" >
@@ -37,6 +37,7 @@
 					</c:forEach>
 				</form>
 				</fieldset></div>
+			</c:if>
 			</c:if>
 			<c:if test="${status == false }">
 				<p id="errorMessage" style="color:red">${errorMessage }</p>
