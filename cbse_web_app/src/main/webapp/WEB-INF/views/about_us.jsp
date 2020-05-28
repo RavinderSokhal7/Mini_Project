@@ -6,7 +6,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="author" content="Webteam">
-<title>About Us | CBSE</title>
+<title>About Us | RCL</title>
 <spring:url value="/resources/css/index.css" var="indexCss" />
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <link href="${indexCss}" rel="stylesheet" type="text/css" />
@@ -15,7 +15,7 @@
 <body>
 
 <div id="header">
-	<h1><a href="#">Component Based Software Development</a></h1>
+	<h1><a href="#">Reusable Component Library</a></h1>
 			<ul id="nav-menu">
 				<c:if test="${not empty menulinks}">
 				    <c:forEach items="${menulinks}" var="menulink">

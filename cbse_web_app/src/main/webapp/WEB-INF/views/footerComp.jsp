@@ -8,7 +8,7 @@
 </head>
 <body>
 <div id="footer" style="position:relative; font-size:14px;" >
-<p id="legal">&copy;Copyright All Rights Reserved. Designed by <a href="contact">Web team</a></p>
+<p id="legal">&copy;Copyright All Rights Reserved. Designed by <a href="contact">Mini Project Group 51, MNNIT, 2019-20</a></p>
 	
 </div>
 </body>

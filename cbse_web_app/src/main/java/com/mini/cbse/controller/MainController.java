@@ -252,8 +252,9 @@ public class MainController {
 		HttpSession session = request.getSession();
 		ModelAndView mv = new ModelAndView("constructed_page");
 		String counter_username = (String) session.getAttribute("user");
+		if(counter_username == null) { return new ModelAndView("redirect:home"); }
 		User user = userJDBCTemplate.getUser(counter_username);
-		if(user == null) { return new ModelAndView("redirect:logout"); }
+		if(user == null) { return new ModelAndView("redirect:home"); }
 		mv.addObject("user", user);
 		int id = (int)session.getAttribute("category_id");
 		Category cat = categoryJDBCTemplate.getCategoryById(id);
@@ -282,8 +283,9 @@ public class MainController {
 		HttpSession session = request.getSession();
 		ModelAndView mv = new ModelAndView("constructed_page");
 		String counter_username = (String) session.getAttribute("user");
+		if(counter_username == null) { return new ModelAndView("redirect:home"); }
 		User user = userJDBCTemplate.getUser(counter_username);
-		if(user == null) { return new ModelAndView("redirect:logout"); }
+		if(user == null) { return new ModelAndView("redirect:home"); }
 		mv.addObject("user", user);
 		int id = (int)session.getAttribute("category_id");
 		Category cat = categoryJDBCTemplate.getCategoryById(id);

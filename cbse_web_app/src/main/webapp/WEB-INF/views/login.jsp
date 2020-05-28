@@ -6,7 +6,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="author" content="Webteam">
-<title>Login | CBSE</title>
+<title>Login | RCL</title>
 <spring:url value="/resources/css/index.css" var="indexCss" />
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <link href="${indexCss}" rel="stylesheet" type="text/css" />
@@ -14,16 +14,8 @@
 
 <body>
 
-<div id="header">
-	<h1><a href="#">Component Based Software Development</a></h1>
-			<ul id="nav-menu">
-				<c:if test="${not empty menulinks}">
-				    <c:forEach items="${menulinks}" var="menulink">
-						<li><a href="${menulink.getLink()}">${menulink.getName()}</a></li>
-					</c:forEach>
-				</c:if>
-			</ul>
-</div>
+<jsp:include page="MainHeaderComp.jsp"></jsp:include>
+
 <div id="page">
 	<div id="content">
 		<div id="title"><h2>Login</h2>
