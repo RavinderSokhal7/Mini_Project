@@ -2,19 +2,15 @@ package com.mini.cbse.components;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.mini.cbse.Response;
 import com.mini.cbse.Book.BookJDBCTemplate;
-import com.mini.cbse.Category.CategoryJDBCTemplate;
-import com.mini.cbse.Train.TrainJDBCTemplate;
 import com.mini.cbse.User.User;
 import com.mini.cbse.User.UserJDBCTemplate;
 
@@ -25,8 +21,6 @@ public class AddBookComp implements Component {
 	ApplicationContext context = new ClassPathXmlApplicationContext("DataSource.xml");
 	BookJDBCTemplate bookJDBCTemplate = (BookJDBCTemplate)context.getBean("bookJDBCTemplate");
 	UserJDBCTemplate userJDBCTemplate = (UserJDBCTemplate)context.getBean("userJDBCTemplate");
-	CategoryJDBCTemplate categoryJDBCTemplate = (CategoryJDBCTemplate)context.getBean("categoryJDBCTemplate");
-	TrainJDBCTemplate trainJDBCTemplate = (TrainJDBCTemplate)context.getBean("trainJDBCTemplate");
 	
 	public void setViewName(String viewName) {
 		this.viewName = viewName;
@@ -59,6 +53,7 @@ public class AddBookComp implements Component {
 		return;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void doPostAction(HttpServletRequest request, Object parameters) {
 		HttpSession session = request.getSession();

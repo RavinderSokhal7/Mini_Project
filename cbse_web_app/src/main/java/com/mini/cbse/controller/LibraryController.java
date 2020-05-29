@@ -6,18 +6,12 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.mini.cbse.Book.BookJDBCTemplate;
-import com.mini.cbse.Category.CategoryJDBCTemplate;
-import com.mini.cbse.Train.TrainJDBCTemplate;
-import com.mini.cbse.User.UserJDBCTemplate;
 import com.mini.cbse.components.AddBookComp;
 import com.mini.cbse.components.Component;
 import com.mini.cbse.components.EditBookComp;
@@ -26,11 +20,6 @@ import com.mini.cbse.components.ShowBooksComp;
 
 @Controller
 public class LibraryController {
-	ApplicationContext context = new ClassPathXmlApplicationContext("DataSource.xml");
-	BookJDBCTemplate bookJDBCTemplate = (BookJDBCTemplate)context.getBean("bookJDBCTemplate");
-	UserJDBCTemplate userJDBCTemplate = (UserJDBCTemplate)context.getBean("userJDBCTemplate");
-	CategoryJDBCTemplate categoryJDBCTemplate = (CategoryJDBCTemplate)context.getBean("categoryJDBCTemplate");
-	TrainJDBCTemplate trainJDBCTemplate = (TrainJDBCTemplate)context.getBean("trainJDBCTemplate");
 
 
 	@RequestMapping(value="/books", method=RequestMethod.GET)

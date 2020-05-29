@@ -1,10 +1,8 @@
 package com.mini.cbse.controller;
 
-import java.sql.Date;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -23,6 +21,8 @@ import com.mini.cbse.Train.TrainJDBCTemplate;
 import com.mini.cbse.Train.TrainSchedule;
 import com.mini.cbse.User.User;
 import com.mini.cbse.User.UserJDBCTemplate;
+import com.mini.cbse.components.Component;
+import com.mini.cbse.components.IssueReturnComp;
 
 @Controller
 public class RailwayReservationController {
@@ -34,40 +34,25 @@ public class RailwayReservationController {
 	
 	@RequestMapping(value="/train-select-city", method = RequestMethod.POST)
 	public ModelAndView getCities(HttpServletRequest request) {
+		
 		HttpSession session = request.getSession();
-		ModelAndView mv = new ModelAndView("constructed_page");
-		String fromCity = request.getParameter("fromCity");
-		String toCity = request.getParameter("toCity");
-		String catname = (String)session.getAttribute("category_name");
+		ModelAndView mv = new ModelAndView();
 		String counter_username = (String) session.getAttribute("user");
 		User user = userJDBCTemplate.getUser(counter_username);
 		if(user == null) { return new ModelAndView("redirect:logout"); }
 		mv.addObject("user", user);
+		String catname = (String)session.getAttribute("category_name");		
+		@SuppressWarnings("unchecked")
 		List<String> list = (List<String>)session.getAttribute("components");
 		mv.addObject("components", list);
 		mv.addObject("category",catname);
-		if(fromCity!=null && toCity!=null) {
-			mv.addObject("fromCity", fromCity);
-			mv.addObject("toCity", toCity);
-//			System.out.println(fromCity+toCity);
-			session.setAttribute("fromCity", fromCity);
-			session.setAttribute("toCity", toCity);
-		}
-		else if(fromCity!=null) {
-			mv.addObject("fromCity", fromCity);
-			session.setAttribute("fromCity", fromCity);
-//			System.out.println("to NULL");
-		}
-		else if(toCity!=null){
-			mv.addObject("toCity", toCity);
-			session.setAttribute("toCity", toCity);
-//			System.out.println("from Null");
-		}
-		else {
-//			System.out.println("Both NULL");
-		}
+	    
+	    Component comp = new IssueReturnComp();
+	    comp.doPostAction(request,null);
+	    mv.setViewName(comp.getViewName());
+	    mv.addAllObjects(comp.getModelMap());
 		
-		return mv;
+	    return mv;
 	}
 	
 	@RequestMapping(value = "/get-trains", method = RequestMethod.GET)
