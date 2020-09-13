@@ -6,6 +6,7 @@ Components are .jsp pages and component classes.
 
 * [Spring](https://docs.spring.io/spring/docs/3.2.x/spring-framework-reference/html/mvc.html) - The web framework used
 * [Maven](https://maven.apache.org/) - Dependency Management
+* [MySQL](https://www.mysql.com/) - Database Management
 
 ## UI
 
