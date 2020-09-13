@@ -9,14 +9,14 @@ Components are .jsp pages and component classes.
 
 ## UI
 
-![Alt text](/screenshots/0.JPG?raw=true "Login")
+![Login](/screenshots/0.JPG?raw=true "Login")
 
-![Alt text](/screenshots/1.JPG?raw=true "Home1")
+![Home Preview](/screenshots/1.JPG?raw=true "Home1")
 
-![Alt text](/screenshots/2.JPG?raw=true "Home2")
+![Home Preview](/screenshots/2.JPG?raw=true "Home2")
 
-![Alt text](/screenshots/3.JPG?raw=true "Component")
+![Component Preview](/screenshots/3.JPG?raw=true "Component")
 
-![Alt text](/screenshots/4.JPG?raw=true "Component Preview 1")
+![Component Preview](/screenshots/4.JPG?raw=true "Component Preview 1")
 
-![Alt text](/screenshots/5.JPG?raw=true "Component Preview 2")
+![Component Preview](/screenshots/5.JPG?raw=true "Component Preview 2")
